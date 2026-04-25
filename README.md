@@ -71,13 +71,14 @@ The following are the hardware specifications we use in production:
 - **Filesystem**: ext4
 
 > [!NOTE]
-To run the node using a supported client, you can use the following command:
-`CLIENT=supported_client docker compose up --build`
- 
+> To run the node using a supported client, you can use the following command:
+> `CLIENT=supported_client docker compose up --build`
+
 Supported clients:
- - reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
- - geth
- - nethermind
+
+- reth (runs vanilla node by default, Flashblocks mode enabled by providing RETH_FB_WEBSOCKET_URL, see [Reth Node README](./reth/README.md))
+- geth
+- nethermind
 
 ## Configuration
 
@@ -143,3 +144,25 @@ For support please join our [Discord](https://discord.gg/buildonbase) post in `�
 THE NODE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. We make no guarantees about asset protection or security. Usage is subject to applicable laws and regulations.
 
 For more information, visit [docs.base.org](https://docs.base.org/).
+
+# execution latest block
+
+```
+curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
+  -H "Content-Type: application/json" http://localhost:8545
+```
+
+# sync lag tính theo phút
+
+```
+echo Latest synced block behind by: $((($(date +%s)-$( \
+ curl -d '{"id":0,"jsonrpc":"2.0","method":"optimism_syncStatus"}' \
+ -H "Content-Type: application/json" http://localhost:7545 | \
+ jq -r .result.unsafe_l2.timestamp))/60)) minutes
+```
+
+# WebSocket execution
+
+```
+# ws://localhost:8546
+```
